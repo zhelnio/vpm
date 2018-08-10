@@ -1,6 +1,13 @@
 # vpm
 Verilog pipeline macros
 
+## Tested
+- [x] Cadence Xcelium 18.03
+- [x] Mentor Modelsim 10.5b (Intel Starter Edition)
+- [x] Icarus Verilog 10.2
+- [x] Xilinx Vivado 2018.2 (simulation+synthesis)
+- [x] Intel Quartus Lite 17.1, 18.0
+
 ## common style
 ```verilog
 wire       hz_flush_n_M1;
