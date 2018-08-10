@@ -64,8 +64,8 @@ prm_register_c  #(8) r_data_M3 (clk, rst_n,                data_M2, data_M3);
 prm_register_c  #(8) r_data_O  (clk, rst_n,                data_M3, data_O);
 
 prm_register_cc r_control_M1 (clk, rst_n, hz_flush_n_M1, control_I,  control_M1);
-prm_register_c  r_control_M1 (clk, rst_n,                control_M1, control_M2);
-prm_register_c  r_control_M1 (clk, rst_n,                control_M2, control_O);
+prm_register_c  r_control_M2 (clk, rst_n,                control_M1, control_M2);
+prm_register_c  r_control_M3 (clk, rst_n,                control_M2, control_O);
 ```
 
 ## VPM macros alternative
