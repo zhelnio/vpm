@@ -8,7 +8,9 @@ Verilog pipeline macros
 - [x] Xilinx Vivado 2018.2 (simulation+synthesis)
 - [x] Intel Quartus Lite 17.1, 18.0
 
-## common style
+All the code below have the same simulation and synthesis results:
+
+### common style
 ```verilog
 wire       hz_flush_n_M1;
 wire [7:0] data_I;
@@ -44,7 +46,7 @@ always @(posedge clk or negedge rst_n) begin
 end
 ```
 
-## primitive based style
+### primitive based style
 ```verilog
 wire       hz_flush_n_M1;
 wire [7:0] data_I;
@@ -68,7 +70,7 @@ prm_register_c  r_control_M2 (clk, rst_n,                control_M1, control_M2)
 prm_register_c  r_control_M3 (clk, rst_n,                control_M2, control_O);
 ```
 
-## VPM macros alternative
+### VPM macros alternative
 ```verilog
 `include "vpm.svh"
 
