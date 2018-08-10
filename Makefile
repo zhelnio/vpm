@@ -31,6 +31,7 @@ synthdir:
 	mkdir $(SYN_DIR)
 
 release:
+	rm -f vpm.tar.gz
 	tar -zcvf vpm.tar.gz ./*
 
 #############################################
