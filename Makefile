@@ -30,6 +30,9 @@ synthdir:
 	rm -rf $(SYN_DIR)
 	mkdir $(SYN_DIR)
 
+release:
+	tar -zcvf vpm.tar.gz ./*
+
 #############################################
 # xcelium
 
