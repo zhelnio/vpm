@@ -1,0 +1,11 @@
+
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M08DAF484C8G
+set_global_assignment -name TOP_LEVEL_ENTITY tb_pipeline
+set_global_assignment -name SYSTEMVERILOG_FILE ../tb/tb_pipeline.sv
+set_global_assignment -name VERILOG_FILE ../rtl/prm_register_ce.v
+set_global_assignment -name VERILOG_FILE ../rtl/prm_register_cce.v
+set_global_assignment -name VERILOG_FILE ../rtl/prm_register_cc.v
+set_global_assignment -name VERILOG_FILE ../rtl/prm_register_c.v
+set_global_assignment -name VERILOG_FILE ../rtl/prm_register.v
+set_global_assignment -name SEARCH_PATH ../rtl
