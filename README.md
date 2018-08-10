@@ -40,7 +40,7 @@ always @(posedge clk or negedge rst_n) begin
     else
         control_M1 <= 8'b0;
     control_M2 <= control_M1;
-    data_O <= data_M3;
+    data_O <= data_M2;
 end
 ```
 
