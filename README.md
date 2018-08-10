@@ -72,5 +72,5 @@ prm_register_c  r_control_M1 (clk, rst_n,                control_M2, control_O);
 `VPM_STAGE_C(O)
 
 `VPM_PIPE_5(data, DATA_WIDTH, I, M1, M2, M3, O)
-`VPM_PIPE_5(control, 1, I, M1, M2, M3, O)
+`VPM_PIPE_4(control, 1, I, M1, M2, M3, O)
 ```
