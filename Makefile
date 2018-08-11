@@ -1,5 +1,25 @@
 
 
+help:
+	$(info make help           - show this message)
+	$(info make clean          - delete temp dirs )
+	$(info make xcelium_gui    - run simulation using Cadence Xcelium (console))
+	$(info make xcelium_cmd    - run simulation using Cadence Xcelium (gui))
+	$(info make xsim_cmd       - run simulation using Xilinx Vivado Xsim (console))
+	$(info make xsim_gui       - run simulation using Xilinx Vivado Xsim (gui))
+	$(info make modelsim_cmd   - run simulation using Mentor Modelsim (console))
+	$(info make modelsim_gui   - run simulation using Mentor Modelsim (gui))
+	$(info make iverilog_cmd   - run simulation using Icarus Verilog (console))
+	$(info make iverilog_gui   - run simulation using Icarus Verilog (gui))
+	$(info make iverilog_macro - use Icarus Verilog to preprocess macros without compilation)
+	$(info make vivado_load    - init Xilinx Vivado project)
+	$(info make vivado_syn     - run synthesis using Xilinx Vivado (console))
+	$(info make vivado_gui     - open Xilinx Vivado project (gui))
+	$(info make quartus_load   - init Intel Quartus project)
+	$(info make quartus_syn    - run synthesis using Intel Quartus (console))
+	$(info make quartus_gui    - open Intel Quartus project (gui))
+	@true
+
 #############################################
 # common options
 
