@@ -87,37 +87,27 @@ prm_register_c  r_control_M3 (clk, rst_n,                control_M2, control_O);
 #### 4. VPM macro based pipeline (preprocessed)
 This code is the result of **iverilog -E** over the source example #3
 ```verilog
-module tb_pipeline
-#(
-    parameter DATA_WIDTH = 8
-)(
-    input  wire                  clk,
-    input  wire                  rst_n,
-    input  wire [DATA_WIDTH-1:0] idata,
-    output wire [DATA_WIDTH-1:0] odata
-);
-    wire hz_flush_n_M1;
-    wire [DATA_WIDTH-1:0] data_I;
-    wire [DATA_WIDTH-1:0] data_M1;
-    wire [DATA_WIDTH-1:0] data_M2;
-    wire [DATA_WIDTH-1:0] data_M3;
-    wire [DATA_WIDTH-1:0] data_O;
-    prm_register_cc #(DATA_WIDTH) r_data_M1 (clk, rst_n, hz_flush_n_M1, data_I, data_M1);
-    prm_register_c #(DATA_WIDTH) r_data_M2 (clk, rst_n, data_M1, data_M2);
-    prm_register_c #(DATA_WIDTH) r_data_M3 (clk, rst_n, data_M2, data_M3);
-    prm_register_c #(DATA_WIDTH) r_data_O (clk, rst_n, data_M3, data_O);
-    wire [1-1:0] control_I;
-    wire [1-1:0] control_M1;
-    wire [1-1:0] control_M2;
-    wire [1-1:0] control_O;
-    prm_register_cc #(1) r_control_M1 (clk, rst_n, hz_flush_n_M1, control_I, control_M1);
-    prm_register_c #(1) r_control_M2 (clk, rst_n, control_M1, control_M2);
-    prm_register_c #(1) r_control_O (clk, rst_n, control_M2, control_O);
-    assign data_I    = idata;
-    assign odata     = data_O;
-    assign control_I = idata[0];
-    assign hz_flush_n_M1 = 1'b1;
-endmodule
+wire hz_flush_n_M1;
+wire [DATA_WIDTH-1:0] data_I;
+wire [DATA_WIDTH-1:0] data_M1;
+wire [DATA_WIDTH-1:0] data_M2;
+wire [DATA_WIDTH-1:0] data_M3;
+wire [DATA_WIDTH-1:0] data_O;
+prm_register_cc #(DATA_WIDTH) r_data_M1 (clk, rst_n, hz_flush_n_M1, data_I, data_M1);
+prm_register_c #(DATA_WIDTH) r_data_M2 (clk, rst_n, data_M1, data_M2);
+prm_register_c #(DATA_WIDTH) r_data_M3 (clk, rst_n, data_M2, data_M3);
+prm_register_c #(DATA_WIDTH) r_data_O (clk, rst_n, data_M3, data_O);
+wire [1-1:0] control_I;
+wire [1-1:0] control_M1;
+wire [1-1:0] control_M2;
+wire [1-1:0] control_O;
+prm_register_cc #(1) r_control_M1 (clk, rst_n, hz_flush_n_M1, control_I, control_M1);
+prm_register_c #(1) r_control_M2 (clk, rst_n, control_M1, control_M2);
+prm_register_c #(1) r_control_O (clk, rst_n, control_M2, control_O);
+assign data_I    = idata;
+assign odata     = data_O;
+assign control_I = idata[0];
+assign hz_flush_n_M1 = 1'b1;
 ```
 
 ## Make targets
