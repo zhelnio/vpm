@@ -19,9 +19,11 @@ module tb_pipeline
     `VPM_STAGE_C(O)
 
     `VPM_PIPE_5(data, DATA_WIDTH, I, M1, M2, M3, O)
+    `VPM_PIPE_4(control, 1, I, M1, M2, O)
 
-    assign data_I = idata;
-    assign odata  = data_O;
+    assign data_I    = idata;
+    assign odata     = data_O;
+    assign control_I = idata[0];
     assign hz_flush_n_M1 = 1'b1;
 
 endmodule
