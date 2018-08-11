@@ -124,6 +124,9 @@ iverilog_cmd: simdir
 iverilog_gui: iverilog_cmd
 	$(GTK_BIN) dump.vcd
 
+#############################################
+# icarus (preprocess only)
+
 IVER_MACRO_TARGET = tb_pipeline
 
 IVER_MACRO_OPT  = -g2012
