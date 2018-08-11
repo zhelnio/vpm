@@ -113,6 +113,7 @@ GTK_BIN  = cd $(SIM_DIR) && gtkwave
 IVER_OPT  = -g2012
 IVER_OPT += -s $(TB_NAME)
 IVER_OPT += -I $(SRC_DIR)
+IVER_OPT += -D ICARUS
 IVER_OPT += $(SRC_DIR)/*.v
 IVER_OPT += $(TB_DIR)/*.sv
 

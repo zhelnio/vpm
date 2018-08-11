@@ -27,6 +27,10 @@ module tb;
         end
     end
 
+    `ifdef ICARUS
+        initial $dumpvars;
+    `endif
+
     tb_top top
     (
         .clk          ( clk           ),
