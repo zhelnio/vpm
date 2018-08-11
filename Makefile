@@ -124,6 +124,18 @@ iverilog_cmd: simdir
 iverilog_gui: iverilog_cmd
 	$(GTK_BIN) dump.vcd
 
+IVER_MACRO_TARGET = tb_pipeline
+
+IVER_MACRO_OPT  = -g2012
+IVER_MACRO_OPT += -E
+IVER_MACRO_OPT += -I $(SRC_DIR)
+IVER_MACRO_OPT += $(TB_DIR)/$(IVER_MACRO_TARGET).sv
+IVER_MACRO_OPT += -o a.out
+
+iverilog_macro: simdir
+	$(IVER_BIN) $(IVER_MACRO_OPT)
+	cd $(SIM_DIR) && grep -v "^\s*$$" a.out > $(IVER_MACRO_TARGET)_o.sv
+
 #############################################
 # vivado synth
 
