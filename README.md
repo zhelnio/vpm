@@ -104,10 +104,6 @@ wire [1-1:0] control_O;
 prm_register_cc #(1) r_control_M1 (clk, rst_n, hz_flush_n_M1, control_I, control_M1);
 prm_register_c #(1) r_control_M2 (clk, rst_n, control_M1, control_M2);
 prm_register_c #(1) r_control_O (clk, rst_n, control_M2, control_O);
-assign data_I    = idata;
-assign odata     = data_O;
-assign control_I = idata[0];
-assign hz_flush_n_M1 = 1'b1;
 ```
 
 ## Make targets
