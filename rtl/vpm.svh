@@ -57,7 +57,7 @@
         prm_register_cc #(size) name (`VPM_CLK, `VPM_RSTN, `VPM_SIGNAL_FLUSH(stage), in, out); \
     `elsif VPM_STAGE_CCE_``stage \
         prm_register_cce #(size) name (`VPM_CLK, `VPM_RSTN, `VPM_SIGNAL_FLUSH(stage),`VPM_SIGNAL_STALL(stage), in, out); \
-    `elsif STAGE_DEF_CE_``stage \
+    `elsif VPM_STAGE_CE``stage \
         prm_register_ce #(size) name (`VPM_CLK, `VPM_RSTN, `VPM_SIGNAL_STALL(stage), in, out); \
     `else \
         prm_register #(size) name (`VPM_CLK, in, out); \
