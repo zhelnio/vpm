@@ -50,7 +50,7 @@
 `define VPM_STAGE(stage) \
     `define VPM_STAGE_``stage
 
-`define VPM_REG(stage,name,size,in,out) \
+`define VPM_REG_W(stage,name,size,in,out) \
     `ifdef VPM_STAGE_C_``stage \
         prm_register_c #(size) name (`VPM_CLK, `VPM_RSTN, in, out); \
     `elsif VPM_STAGE_CC_``stage \
@@ -63,52 +63,65 @@
         prm_register #(size) name (`VPM_CLK, in, out); \
     `endif
 
-`define VPM_PIPE_2(name,size,s0,s1) \
+`define VPM_REG_1(stage,name,in,out) \
+    `ifdef VPM_STAGE_C_``stage \
+        prm_register_c name (`VPM_CLK, `VPM_RSTN, in, out); \
+    `elsif VPM_STAGE_CC_``stage \
+        prm_register_cc name (`VPM_CLK, `VPM_RSTN, `VPM_SIGNAL_FLUSH(stage), in, out); \
+    `elsif VPM_STAGE_CCE_``stage \
+        prm_register_cce name (`VPM_CLK, `VPM_RSTN, `VPM_SIGNAL_FLUSH(stage),`VPM_SIGNAL_STALL(stage), in, out); \
+    `elsif VPM_STAGE_CE``stage \
+        prm_register_ce name (`VPM_CLK, `VPM_RSTN, `VPM_SIGNAL_STALL(stage), in, out); \
+    `else \
+        prm_register name (`VPM_CLK, in, out); \
+    `endif
+
+`define VPM_PIPEW_2(name,size,s0,s1) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1)
 
-`define VPM_PIPE_3(name,size,s0,s1,s2) \
+`define VPM_PIPEW_3(name,size,s0,s1,s2) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2)
 
-`define VPM_PIPE_4(name,size,s0,s1,s2,s3) \
+`define VPM_PIPEW_4(name,size,s0,s1,s2,s3) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
     wire [size-1:0] name``_``s3; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3)
 
-`define VPM_PIPE_5(name,size,s0,s1,s2,s3,s4) \
+`define VPM_PIPEW_5(name,size,s0,s1,s2,s3,s4) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
     wire [size-1:0] name``_``s3; \
     wire [size-1:0] name``_``s4; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4,r_``name``_``s4, size, name``_``s3, name``_``s4)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4,r_``name``_``s4, size, name``_``s3, name``_``s4)
 
-`define VPM_PIPE_6(name,size,s0,s1,s2,s3,s4,s5) \
+`define VPM_PIPEW_6(name,size,s0,s1,s2,s3,s4,s5) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
     wire [size-1:0] name``_``s3; \
     wire [size-1:0] name``_``s4; \
     wire [size-1:0] name``_``s5; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
-    `VPM_REG(s5,r_``name``_``s5, size, name``_``s4, name``_``s5)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
+    `VPM_REG_W(s5,r_``name``_``s5, size, name``_``s4, name``_``s5)
 
-`define VPM_PIPE_7(name,size,s0,s1,s2,s3,s4,s5,s6) \
+`define VPM_PIPEW_7(name,size,s0,s1,s2,s3,s4,s5,s6) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
@@ -116,14 +129,14 @@
     wire [size-1:0] name``_``s4; \
     wire [size-1:0] name``_``s5; \
     wire [size-1:0] name``_``s6; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
-    `VPM_REG(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
-    `VPM_REG(s6,r_``name``_``s6, size, name``_``s5, name``_``s6)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
+    `VPM_REG_W(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
+    `VPM_REG_W(s6,r_``name``_``s6, size, name``_``s5, name``_``s6)
 
-`define VPM_PIPE_8(name,size,s0,s1,s2,s3,s4,s5,s6,s7) \
+`define VPM_PIPEW_8(name,size,s0,s1,s2,s3,s4,s5,s6,s7) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
@@ -132,15 +145,15 @@
     wire [size-1:0] name``_``s5; \
     wire [size-1:0] name``_``s6; \
     wire [size-1:0] name``_``s7; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
-    `VPM_REG(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
-    `VPM_REG(s6,r_``name``_``s6, size, name``_``s5, name``_``s6) \
-    `VPM_REG(s7,r_``name``_``s7, size, name``_``s6, name``_``s7)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
+    `VPM_REG_W(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
+    `VPM_REG_W(s6,r_``name``_``s6, size, name``_``s5, name``_``s6) \
+    `VPM_REG_W(s7,r_``name``_``s7, size, name``_``s6, name``_``s7)
 
-`define VPM_PIPE_9(name,size,s0,s1,s2,s3,s4,s5,s6,s7,s8) \
+`define VPM_PIPEW_9(name,size,s0,s1,s2,s3,s4,s5,s6,s7,s8) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
@@ -150,16 +163,16 @@
     wire [size-1:0] name``_``s6; \
     wire [size-1:0] name``_``s7; \
     wire [size-1:0] name``_``s8; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
-    `VPM_REG(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
-    `VPM_REG(s6,r_``name``_``s6, size, name``_``s5, name``_``s6) \
-    `VPM_REG(s7,r_``name``_``s7, size, name``_``s6, name``_``s7) \
-    `VPM_REG(s8,r_``name``_``s8, size, name``_``s7, name``_``s8)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
+    `VPM_REG_W(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
+    `VPM_REG_W(s6,r_``name``_``s6, size, name``_``s5, name``_``s6) \
+    `VPM_REG_W(s7,r_``name``_``s7, size, name``_``s6, name``_``s7) \
+    `VPM_REG_W(s8,r_``name``_``s8, size, name``_``s7, name``_``s8)
 
-`define VPM_PIPE_10(name,size,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9) \
+`define VPM_PIPEW_10(name,size,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
@@ -170,17 +183,17 @@
     wire [size-1:0] name``_``s7; \
     wire [size-1:0] name``_``s8; \
     wire [size-1:0] name``_``s9; \
-    `VPM_REG(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
-    `VPM_REG(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
-    `VPM_REG(s6,r_``name``_``s6, size, name``_``s5, name``_``s6) \
-    `VPM_REG(s7,r_``name``_``s7, size, name``_``s6, name``_``s7) \
-    `VPM_REG(s8,r_``name``_``s8, size, name``_``s7, name``_``s8) \
-    `VPM_REG(s9,r_``name``_``s9, size, name``_``s8, name``_``s9)
+    `VPM_REG_W(s1,r_``name``_``s1, size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2,r_``name``_``s2, size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3,r_``name``_``s3, size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4,r_``name``_``s4, size, name``_``s3, name``_``s4) \
+    `VPM_REG_W(s5,r_``name``_``s5, size, name``_``s4, name``_``s5) \
+    `VPM_REG_W(s6,r_``name``_``s6, size, name``_``s5, name``_``s6) \
+    `VPM_REG_W(s7,r_``name``_``s7, size, name``_``s6, name``_``s7) \
+    `VPM_REG_W(s8,r_``name``_``s8, size, name``_``s7, name``_``s8) \
+    `VPM_REG_W(s9,r_``name``_``s9, size, name``_``s8, name``_``s9)
 
-`define VPM_PIPE_11(name,size,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10) \
+`define VPM_PIPEW_11(name,size,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
     wire [size-1:0] name``_``s2; \
@@ -192,15 +205,155 @@
     wire [size-1:0] name``_``s8; \
     wire [size-1:0] name``_``s9; \
     wire [size-1:0] name``_``s10; \
-    `VPM_REG(s1, r_``name``_``s1,  size, name``_``s0, name``_``s1) \
-    `VPM_REG(s2, r_``name``_``s2,  size, name``_``s1, name``_``s2) \
-    `VPM_REG(s3, r_``name``_``s3,  size, name``_``s2, name``_``s3) \
-    `VPM_REG(s4, r_``name``_``s4,  size, name``_``s3, name``_``s4) \
-    `VPM_REG(s5, r_``name``_``s5,  size, name``_``s4, name``_``s5) \
-    `VPM_REG(s6, r_``name``_``s6,  size, name``_``s5, name``_``s6) \
-    `VPM_REG(s7, r_``name``_``s7,  size, name``_``s6, name``_``s7) \
-    `VPM_REG(s8, r_``name``_``s8,  size, name``_``s7, name``_``s8) \
-    `VPM_REG(s9, r_``name``_``s9,  size, name``_``s8, name``_``s9) \
-    `VPM_REG(s10,r_``name``_``s10, size, name``_``s9, name``_``s10)
+    `VPM_REG_W(s1, r_``name``_``s1,  size, name``_``s0, name``_``s1) \
+    `VPM_REG_W(s2, r_``name``_``s2,  size, name``_``s1, name``_``s2) \
+    `VPM_REG_W(s3, r_``name``_``s3,  size, name``_``s2, name``_``s3) \
+    `VPM_REG_W(s4, r_``name``_``s4,  size, name``_``s3, name``_``s4) \
+    `VPM_REG_W(s5, r_``name``_``s5,  size, name``_``s4, name``_``s5) \
+    `VPM_REG_W(s6, r_``name``_``s6,  size, name``_``s5, name``_``s6) \
+    `VPM_REG_W(s7, r_``name``_``s7,  size, name``_``s6, name``_``s7) \
+    `VPM_REG_W(s8, r_``name``_``s8,  size, name``_``s7, name``_``s8) \
+    `VPM_REG_W(s9, r_``name``_``s9,  size, name``_``s8, name``_``s9) \
+    `VPM_REG_W(s10,r_``name``_``s10, size, name``_``s9, name``_``s10)
+
+`define VPM_PIPE_2(name,s0,s1) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1)
+
+`define VPM_PIPE_3(name,s0,s1,s2) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2)
+
+`define VPM_PIPE_4(name,s0,s1,s2,s3) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3)
+
+`define VPM_PIPE_5(name,s0,s1,s2,s3,s4) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4,r_``name``_``s4, name``_``s3, name``_``s4)
+
+`define VPM_PIPE_6(name,s0,s1,s2,s3,s4,s5) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    wire name``_``s5; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4,r_``name``_``s4, name``_``s3, name``_``s4) \
+    `VPM_REG_1(s5,r_``name``_``s5, name``_``s4, name``_``s5)
+
+`define VPM_PIPE_7(name,s0,s1,s2,s3,s4,s5,s6) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    wire name``_``s5; \
+    wire name``_``s6; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4,r_``name``_``s4, name``_``s3, name``_``s4) \
+    `VPM_REG_1(s5,r_``name``_``s5, name``_``s4, name``_``s5) \
+    `VPM_REG_1(s6,r_``name``_``s6, name``_``s5, name``_``s6)
+
+`define VPM_PIPE_8(name,s0,s1,s2,s3,s4,s5,s6,s7) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    wire name``_``s5; \
+    wire name``_``s6; \
+    wire name``_``s7; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4,r_``name``_``s4, name``_``s3, name``_``s4) \
+    `VPM_REG_1(s5,r_``name``_``s5, name``_``s4, name``_``s5) \
+    `VPM_REG_1(s6,r_``name``_``s6, name``_``s5, name``_``s6) \
+    `VPM_REG_1(s7,r_``name``_``s7, name``_``s6, name``_``s7)
+
+`define VPM_PIPE_9(name,s0,s1,s2,s3,s4,s5,s6,s7,s8) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    wire name``_``s5; \
+    wire name``_``s6; \
+    wire name``_``s7; \
+    wire name``_``s8; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4,r_``name``_``s4, name``_``s3, name``_``s4) \
+    `VPM_REG_1(s5,r_``name``_``s5, name``_``s4, name``_``s5) \
+    `VPM_REG_1(s6,r_``name``_``s6, name``_``s5, name``_``s6) \
+    `VPM_REG_1(s7,r_``name``_``s7, name``_``s6, name``_``s7) \
+    `VPM_REG_1(s8,r_``name``_``s8, name``_``s7, name``_``s8)
+
+`define VPM_PIPE_10(name,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    wire name``_``s5; \
+    wire name``_``s6; \
+    wire name``_``s7; \
+    wire name``_``s8; \
+    wire name``_``s9; \
+    `VPM_REG_1(s1,r_``name``_``s1, name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2,r_``name``_``s2, name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3,r_``name``_``s3, name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4,r_``name``_``s4, name``_``s3, name``_``s4) \
+    `VPM_REG_1(s5,r_``name``_``s5, name``_``s4, name``_``s5) \
+    `VPM_REG_1(s6,r_``name``_``s6, name``_``s5, name``_``s6) \
+    `VPM_REG_1(s7,r_``name``_``s7, name``_``s6, name``_``s7) \
+    `VPM_REG_1(s8,r_``name``_``s8, name``_``s7, name``_``s8) \
+    `VPM_REG_1(s9,r_``name``_``s9, name``_``s8, name``_``s9)
+
+`define VPM_PIPE_11(name,s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10) \
+    wire name``_``s0; \
+    wire name``_``s1; \
+    wire name``_``s2; \
+    wire name``_``s3; \
+    wire name``_``s4; \
+    wire name``_``s5; \
+    wire name``_``s6; \
+    wire name``_``s7; \
+    wire name``_``s8; \
+    wire name``_``s9; \
+    wire name``_``s10; \
+    `VPM_REG_1(s1, r_``name``_``s1,  name``_``s0, name``_``s1) \
+    `VPM_REG_1(s2, r_``name``_``s2,  name``_``s1, name``_``s2) \
+    `VPM_REG_1(s3, r_``name``_``s3,  name``_``s2, name``_``s3) \
+    `VPM_REG_1(s4, r_``name``_``s4,  name``_``s3, name``_``s4) \
+    `VPM_REG_1(s5, r_``name``_``s5,  name``_``s4, name``_``s5) \
+    `VPM_REG_1(s6, r_``name``_``s6,  name``_``s5, name``_``s6) \
+    `VPM_REG_1(s7, r_``name``_``s7,  name``_``s6, name``_``s7) \
+    `VPM_REG_1(s8, r_``name``_``s8,  name``_``s7, name``_``s8) \
+    `VPM_REG_1(s9, r_``name``_``s9,  name``_``s8, name``_``s9) \
+    `VPM_REG_1(s10,r_``name``_``s10, name``_``s9, name``_``s10)
 
 `endif // INCLUDE_VPM

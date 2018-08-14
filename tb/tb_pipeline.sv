@@ -9,7 +9,9 @@ module tb_pipeline
 )(
     input  wire                  clk,
     input  wire                  rst_n,
+    input  wire                  icontrol,
     input  wire [DATA_WIDTH-1:0] idata,
+    output wire                  ocontrol,
     output wire [DATA_WIDTH-1:0] odata
 );
     `VPM_STAGE_C(I)
@@ -18,12 +20,13 @@ module tb_pipeline
     `VPM_STAGE_C(M3)
     `VPM_STAGE_C(O)
 
-    `VPM_PIPE_5(data, DATA_WIDTH, I, M1, M2, M3, O)
-    `VPM_PIPE_4(control, 1, I, M1, M2, O)
+    `VPM_PIPEW_5(data,    DATA_WIDTH, I, M1, M2, M3, O)
+    `VPM_PIPE_4 (control,             I, M1, M2,     O)
 
     assign data_I    = idata;
     assign odata     = data_O;
-    assign control_I = idata[0];
+    assign control_I = icontrol;
+    assign ocontrol  = control_O;
     assign hz_flush_n_M1 = 1'b1;
 
 endmodule
