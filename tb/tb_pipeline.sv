@@ -20,8 +20,8 @@ module tb_pipeline
     `VPM_STAGE_C(M3)
     `VPM_STAGE_C(O)
 
-    `VPM_PIPEW_5(data,    DATA_WIDTH, I, M1, M2, M3, O)
-    `VPM_PIPE_4 (control,             I, M1, M2,     O)
+    `VPM_WPIPE_5 (data,    DATA_WIDTH, I, M1, M2, M3, O)
+    `VPM_SPIPE_4 (control,             I, M1, M2,     O)
 
     assign data_I    = idata;
     assign odata     = data_O;
