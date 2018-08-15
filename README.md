@@ -81,8 +81,8 @@ prm_register_c  r_control_M3 (clk, rst_n,                control_M2, control_O);
 `VPM_STAGE_C(M3)
 `VPM_STAGE_C(O)
 
-`VPM_PIPE_5(data, DATA_WIDTH, I, M1, M2, M3, O)
-`VPM_PIPE_4(control, 1, I, M1, M2, O)
+`VPM_WPIPE_5 (data,    DATA_WIDTH, I, M1, M2, M3, O)
+`VPM_SPIPE_4 (control,             I, M1, M2,     O)
 ```
 #### 4. VPM macro based pipeline (preprocessed)
 This code is the result of **iverilog -E** over the source example #3
@@ -97,13 +97,13 @@ prm_register_cc #(DATA_WIDTH) r_data_M1 (clk, rst_n, hz_flush_n_M1, data_I, data
 prm_register_c #(DATA_WIDTH) r_data_M2 (clk, rst_n, data_M1, data_M2);
 prm_register_c #(DATA_WIDTH) r_data_M3 (clk, rst_n, data_M2, data_M3);
 prm_register_c #(DATA_WIDTH) r_data_O (clk, rst_n, data_M3, data_O);
-wire [1-1:0] control_I;
-wire [1-1:0] control_M1;
-wire [1-1:0] control_M2;
-wire [1-1:0] control_O;
-prm_register_cc #(1) r_control_M1 (clk, rst_n, hz_flush_n_M1, control_I, control_M1);
-prm_register_c #(1) r_control_M2 (clk, rst_n, control_M1, control_M2);
-prm_register_c #(1) r_control_O (clk, rst_n, control_M2, control_O);
+wire control_I;
+wire control_M1;
+wire control_M2;
+wire control_O;
+prm_register_cc r_control_M1 (clk, rst_n, hz_flush_n_M1, control_I, control_M1);
+prm_register_c r_control_M2 (clk, rst_n, control_M1, control_M2);
+prm_register_c r_control_O (clk, rst_n, control_M2, control_O);
 ```
 
 ## Make targets
