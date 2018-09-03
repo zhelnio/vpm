@@ -76,6 +76,9 @@
         prm_register name (`VPM_CLK, in, out); \
     `endif
 
+`define VPM_WPIPE_1(name,size,s0) \
+    wire [size-1:0] name``_``s0;
+
 `define VPM_WPIPE_2(name,size,s0,s1) \
     wire [size-1:0] name``_``s0; \
     wire [size-1:0] name``_``s1; \
@@ -215,6 +218,9 @@
     `VPM_REG_W(s8, r_``name``_``s8,  size, name``_``s7, name``_``s8) \
     `VPM_REG_W(s9, r_``name``_``s9,  size, name``_``s8, name``_``s9) \
     `VPM_REG_W(s10,r_``name``_``s10, size, name``_``s9, name``_``s10)
+
+`define VPM_SPIPE_1(name,s0) \
+    wire name``_``s0; \
 
 `define VPM_SPIPE_2(name,s0,s1) \
     wire name``_``s0; \
